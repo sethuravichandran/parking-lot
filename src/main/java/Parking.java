@@ -4,6 +4,6 @@ public class Parking {
 
     }
 
-    public void park(Parkable parkable){
+    public void park(Parkable parkable) throws AlreadyParkedException, ParkingLotFullException{
     }
 }
