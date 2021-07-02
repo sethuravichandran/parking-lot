@@ -10,18 +10,22 @@ import static org.mockito.Mockito.mock;
 
 public class ParkingTest {
     private Parking parkingLotOne;
+    private Parking parkingLotTwo;
     private static Parkable carOne;
+    private static Parkable carTwo;
 
     @BeforeAll
     static void beforeAll()
     {
         carOne = mock(Parkable.class);
+        carTwo = mock(Parkable.class);
     }
 
     @BeforeEach
     void beforeEach()
     {
         parkingLotOne = new Parking(1);
+        parkingLotTwo = new Parking(2);
     }
 
     @Test
@@ -38,9 +42,17 @@ public class ParkingTest {
 
     @Test
     void toThrowExceptionWhenTheCarISAlreadyParked() throws Exception {
-        parkingLotOne.park(carOne);
+        parkingLotTwo.park(carOne);
 
         assertThrows(AlreadyParkedException.class, () ->
-                parkingLotOne.park(carOne));
+                parkingLotTwo.park(carOne));
+    }
+
+    @Test
+    void toThrowExceptionWhenTheLotIsFull() throws Exception{
+        parkingLotOne.park(carOne);
+
+        assertThrows(ParkingLotFullException.class, () ->
+                parkingLotOne.park(carTwo));
     }
 }
