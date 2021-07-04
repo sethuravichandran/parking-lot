@@ -1,4 +1,5 @@
 import exceptions.AlreadyParkedException;
+import exceptions.NotParkedException;
 import exceptions.ParkingLotFullException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,5 +55,14 @@ public class ParkingTest {
 
         assertThrows(ParkingLotFullException.class, () ->
                 parkingLotOne.park(carTwo));
+    }
+
+    @Test
+    void toUnparkAParkedCar() throws Exception{
+        parkingLotOne.park(carOne);
+        parkingLotOne.unpark(carOne);
+
+        assertThrows(NotParkedException.class, () ->
+                parkingLotOne.unpark(carOne));
     }
 }

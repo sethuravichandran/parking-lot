@@ -1,4 +1,5 @@
 import exceptions.AlreadyParkedException;
+import exceptions.NotParkedException;
 import exceptions.ParkingLotFullException;
 
 import java.util.HashSet;
@@ -25,5 +26,13 @@ public class Parking {
         }
 
         parkedCar.add(parkable);
+    }
+
+    public void unpark(Parkable parkable) throws NotParkedException{
+        if (!parkedCar.contains(parkable)){
+            throw new NotParkedException();
+        }
+
+        parkedCar.remove(parkable);
     }
 }
