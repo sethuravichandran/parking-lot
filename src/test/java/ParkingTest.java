@@ -14,7 +14,8 @@ public class ParkingTest {
     private Parking parkingLotTwo;
     private static Parkable carOne;
     private static Parkable carTwo;
-    private static ParkingLotOwner parkingLotOwner;
+    private ParkingLotObserver parkingLotOwner;
+    private ParkingLotObserver trafficCop;
 
     @BeforeAll
     static void beforeAll()
@@ -29,7 +30,8 @@ public class ParkingTest {
     {
         parkingLotOne = new Parking(1);
         parkingLotTwo = new Parking(2);
-        parkingLotOwner = mock(ParkingLotOwner.class);
+        parkingLotOwner = mock(ParkingLotObserver.class);
+        trafficCop = mock(ParkingLotObserver.class);
     }
 
     @Test
@@ -72,18 +74,29 @@ public class ParkingTest {
     @Test
     void toIntimateOwnerWhenTheParkingLotIsFull() throws Exception
     {
-        parkingLotOne.assignOwner(parkingLotOwner);
+        parkingLotOne.assignObserver(parkingLotOwner);
         parkingLotOne.park(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateFull();
+        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull();
     }
 
     @Test
     void notToIntimateOwnerWhenTheParkingLotIsNotFullAfterParking() throws Exception
     {
-        parkingLotTwo.assignOwner(parkingLotOwner);
+        parkingLotTwo.assignObserver(parkingLotOwner);
         parkingLotTwo.park(carOne);
 
-        verify(parkingLotOwner, never()).intimateFull();
+        verify(parkingLotOwner, never()).intimateParkingLotIsFull();
+    }
+
+    @Test
+    void toIntimateTrafficCopWhenParkingLotIsFull() throws Exception
+    {
+        parkingLotOne.assignObserver(parkingLotOwner);
+        parkingLotOne.assignObserver(trafficCop);
+        parkingLotOne.park(carOne);
+
+        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull();
+        verify(trafficCop, times(1)).intimateParkingLotIsFull();
     }
 }

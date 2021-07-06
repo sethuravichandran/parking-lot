@@ -7,8 +7,8 @@ import java.util.Set;
 
 public class Parking {
     private final int size;
-    private final Set<Parkable> parkedCar = new HashSet<>();
-    private ParkingLotOwner owner;
+    private final Set<Parkable> parkingLot = new HashSet<>();
+    private ParkingLotObservers observers = new ParkingLotObservers();
 
     public Parking(int size)
     {
@@ -16,7 +16,7 @@ public class Parking {
     }
 
     public void park(Parkable parkable) throws AlreadyParkedException, ParkingLotFullException {
-        if (parkedCar.contains(parkable))
+        if (parkingLot.contains(parkable))
         {
             throw new AlreadyParkedException();
         }
@@ -25,26 +25,26 @@ public class Parking {
         {
             throw new ParkingLotFullException();
         }
-        parkedCar.add(parkable);
+        parkingLot.add(parkable);
 
-        if (owner!=null && isFull()){
-            owner.intimateFull();
+        if (isFull()){
+            observers.intimateParkingLotIsFull();
         }
     }
 
     private boolean isFull(){
-        return size == parkedCar.size();
+        return size == parkingLot.size();
     }
 
     public void unpark(Parkable parkable) throws NotParkedException{
-        if (!parkedCar.contains(parkable)){
+        if (!parkingLot.contains(parkable)){
             throw new NotParkedException();
         }
 
-        parkedCar.remove(parkable);
+        parkingLot.remove(parkable);
     }
 
-    public void assignOwner(ParkingLotOwner owner) {
-        this.owner = owner;
+    public void assignObserver(ParkingLotObserver observer) {
+        this.observers.add(observer);
     }
 }
