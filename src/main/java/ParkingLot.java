@@ -5,12 +5,12 @@ import exceptions.ParkingLotFullException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Parking {
+public class ParkingLot {
     private final int size;
     private final Set<Parkable> parkingLot = new HashSet<>();
     private ParkingLotObservers observers = new ParkingLotObservers();
 
-    public Parking(int size)
+    public ParkingLot(int size)
     {
         this.size = size;
     }
@@ -32,9 +32,7 @@ public class Parking {
         }
     }
 
-    private boolean isFull(){
-        return size == parkingLot.size();
-    }
+
 
     public void unpark(Parkable parkable) throws NotParkedException{
         if (!parkingLot.contains(parkable)){
@@ -42,9 +40,23 @@ public class Parking {
         }
 
         parkingLot.remove(parkable);
+
+        if (isFullBeforeUnpark())
+        {
+            observers.intimateParkingLotIsFree();
+        }
     }
 
     public void assignObserver(ParkingLotObserver observer) {
         this.observers.add(observer);
     }
+
+    private boolean isFullBeforeUnpark(){
+        return (size-1) == parkingLot.size();
+    }
+
+    private boolean isFull(){
+        return size == parkingLot.size();
+    }
+
 }

@@ -7,4 +7,11 @@ public class ParkingLotObservers  extends ArrayList<ParkingLotObserver> {
             observer.intimateParkingLotIsFull();
         }
     }
+
+    public void intimateParkingLotIsFree() {
+        for (ParkingLotObserver observer : this)
+        {
+            observer.intimateParkingLotIsFree();
+        }
+    }
 }

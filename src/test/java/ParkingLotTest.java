@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
 
-public class ParkingTest {
-    private Parking parkingLotOne;
-    private Parking parkingLotTwo;
+public class ParkingLotTest {
+    private ParkingLot parkingLotOne;
+    private ParkingLot parkingLotTwo;
     private static Parkable carOne;
     private static Parkable carTwo;
     private ParkingLotObserver parkingLotOwner;
@@ -28,8 +28,8 @@ public class ParkingTest {
     @BeforeEach
     void beforeEach()
     {
-        parkingLotOne = new Parking(1);
-        parkingLotTwo = new Parking(2);
+        parkingLotOne = new ParkingLot(1);
+        parkingLotTwo = new ParkingLot(2);
         parkingLotOwner = mock(ParkingLotObserver.class);
         trafficCop = mock(ParkingLotObserver.class);
     }
@@ -92,11 +92,10 @@ public class ParkingTest {
     @Test
     void toIntimateTrafficCopWhenParkingLotIsFull() throws Exception
     {
-        parkingLotOne.assignObserver(parkingLotOwner);
         parkingLotOne.assignObserver(trafficCop);
         parkingLotOne.park(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull();
         verify(trafficCop, times(1)).intimateParkingLotIsFull();
     }
+
 }
