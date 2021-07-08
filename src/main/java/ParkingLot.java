@@ -28,7 +28,7 @@ public class ParkingLot {
         parkingLot.add(parkable);
 
         if (isFull()){
-            observers.intimateParkingLotIsFull();
+            observers.intimateParkingLotIsFull(this);
         }
     }
 
@@ -43,19 +43,22 @@ public class ParkingLot {
 
         if (isFullBeforeUnpark())
         {
-            observers.intimateParkingLotIsFree();
+            observers.intimateParkingLotIsFree(this);
         }
     }
 
     public void assignObserver(ParkingLotObserver observer) {
+
         this.observers.add(observer);
     }
 
     private boolean isFullBeforeUnpark(){
+
         return (size-1) == parkingLot.size();
     }
 
-    private boolean isFull(){
+    boolean isFull(){
+
         return size == parkingLot.size();
     }
 

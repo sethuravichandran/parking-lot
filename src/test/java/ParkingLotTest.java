@@ -12,6 +12,7 @@ import static org.mockito.Mockito.*;
 public class ParkingLotTest {
     private ParkingLot parkingLotOne;
     private ParkingLot parkingLotTwo;
+    private static ParkingLot parkingLot;
     private static Parkable carOne;
     private static Parkable carTwo;
     private ParkingLotObserver parkingLotOwner;
@@ -77,7 +78,7 @@ public class ParkingLotTest {
         parkingLotOne.assignObserver(parkingLotOwner);
         parkingLotOne.park(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull();
+        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull(parkingLot);
     }
 
     @Test
@@ -86,7 +87,7 @@ public class ParkingLotTest {
         parkingLotTwo.assignObserver(parkingLotOwner);
         parkingLotTwo.park(carOne);
 
-        verify(parkingLotOwner, never()).intimateParkingLotIsFull();
+        verify(parkingLotOwner, never()).intimateParkingLotIsFull(parkingLot);
     }
 
     @Test
@@ -95,7 +96,7 @@ public class ParkingLotTest {
         parkingLotOne.assignObserver(trafficCop);
         parkingLotOne.park(carOne);
 
-        verify(trafficCop, times(1)).intimateParkingLotIsFull();
+        verify(trafficCop, times(1)).intimateParkingLotIsFull(parkingLot);
     }
 
 }

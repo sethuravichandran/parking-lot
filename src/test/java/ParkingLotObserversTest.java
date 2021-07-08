@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.*;
 
 public class ParkingLotObserversTest {
+    private static ParkingLot parkingLot;
     private ParkingLot parkingLotOne;
     private ParkingLot parkingLotTwo;
     private static Parkable carOne;
@@ -36,8 +37,8 @@ public class ParkingLotObserversTest {
         parkingLotOne.park(carOne);
         parkingLotOne.unpark(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateParkingLotIsFree();
-        verify(trafficCop, times(1)).intimateParkingLotIsFree();
+        verify(parkingLotOwner, times(1)).intimateParkingLotIsFree(parkingLot);
+        verify(trafficCop, times(1)).intimateParkingLotIsFree(parkingLot);
 
     }
 
@@ -51,8 +52,8 @@ public class ParkingLotObserversTest {
         parkingLotTwo.park(carTwo);
         parkingLotTwo.unpark(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateParkingLotIsFree();
-        verify(trafficCop, times(1)).intimateParkingLotIsFree();
+        verify(parkingLotOwner, times(1)).intimateParkingLotIsFree(parkingLot);
+        verify(trafficCop, times(1)).intimateParkingLotIsFree(parkingLot);
 
     }
 }

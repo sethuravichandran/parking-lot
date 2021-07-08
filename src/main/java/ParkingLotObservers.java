@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
 public class ParkingLotObservers  extends ArrayList<ParkingLotObserver> {
-    public void intimateParkingLotIsFull() {
+    public void intimateParkingLotIsFull(ParkingLot parkingLot) {
         for (ParkingLotObserver observer : this)
         {
-            observer.intimateParkingLotIsFull();
+            observer.intimateParkingLotIsFull(parkingLot);
         }
     }
 
-    public void intimateParkingLotIsFree() {
+    public void intimateParkingLotIsFree(ParkingLot parkingLot) {
         for (ParkingLotObserver observer : this)
         {
-            observer.intimateParkingLotIsFree();
+            observer.intimateParkingLotIsFree(parkingLot);
         }
     }
 }

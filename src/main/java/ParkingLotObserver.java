@@ -1,5 +1,5 @@
 public interface ParkingLotObserver {
-    void intimateParkingLotIsFull();
+    void intimateParkingLotIsFull(ParkingLot parkingLot);
 
-    void intimateParkingLotIsFree();
+    void intimateParkingLotIsFree(ParkingLot parkingLot);
 }
