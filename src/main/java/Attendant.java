@@ -1,5 +1,6 @@
 import exceptions.AllLotsAreFullException;
 import exceptions.AlreadyParkedException;
+import exceptions.NotParkedException;
 import exceptions.ParkingLotFullException;
 
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ public class Attendant implements ParkingLotObserver{
         }
     }
 
-    public void direct(Parkable parkable) throws AlreadyParkedException, ParkingLotFullException,
+    public void direct(Parkable car) throws AlreadyParkedException, ParkingLotFullException,
             AllLotsAreFullException {
-        if(allocation.containsKey(parkable)){
+        if(allocation.containsKey(car)){
             throw new AlreadyParkedException();
         }
         if (availableParkingLots.isEmpty()){
@@ -27,8 +28,20 @@ public class Attendant implements ParkingLotObserver{
         }
 
         ParkingLot lotToBeParked = availableParkingLots.get(0);
-        lotToBeParked.park(parkable);
-        allocation.put(parkable, lotToBeParked);
+        lotToBeParked.park(car);
+        allocation.put(car, lotToBeParked);
+    }
+
+    public void unpark(Parkable car) throws NotParkedException {
+
+        if (!allocation.containsKey(car))
+        {
+            throw new NotParkedException();
+        }
+
+        ParkingLot lotToBeUnparkedFrom = allocation.get(car);
+        lotToBeUnparkedFrom.unpark(car);
+        allocation.remove(car);
     }
 
     @Override
@@ -42,4 +55,5 @@ public class Attendant implements ParkingLotObserver{
         availableParkingLots.add(parkingLot);
 
     }
+
 }

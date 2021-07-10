@@ -3,6 +3,7 @@ import exceptions.NotParkedException;
 import exceptions.ParkingLotFullException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -12,7 +13,6 @@ import static org.mockito.Mockito.*;
 public class ParkingLotTest {
     private ParkingLot parkingLotOne;
     private ParkingLot parkingLotTwo;
-    private static ParkingLot parkingLot;
     private static Parkable carOne;
     private static Parkable carTwo;
     private ParkingLotObserver parkingLotOwner;
@@ -35,68 +35,73 @@ public class ParkingLotTest {
         trafficCop = mock(ParkingLotObserver.class);
     }
 
-    @Test
-    void toParkACarInAParkingLot()
-    {
-        try {
+    @Nested
+    class Park {
+        @Test
+        void toParkACarInAParkingLot() {
+            try {
+                parkingLotOne.park(carOne);
+            } catch (AlreadyParkedException e) {
+                fail("The car is already parked.");
+            } catch (ParkingLotFullException f) {
+                fail("The parking lot is already full.");
+            }
+        }
+
+        @Test
+        void toThrowExceptionWhenTheCarISAlreadyParked() throws Exception {
+            parkingLotTwo.park(carOne);
+
+            assertThrows(AlreadyParkedException.class, () ->
+                    parkingLotTwo.park(carOne));
+        }
+
+        @Test
+        void toThrowExceptionWhenTheLotIsFull() throws Exception {
             parkingLotOne.park(carOne);
-        } catch (AlreadyParkedException e) {
-           fail("The car is already parked.");
-        } catch (ParkingLotFullException f){
-            fail("The parking lot is already full.");
+
+            assertThrows(ParkingLotFullException.class, () ->
+                    parkingLotOne.park(carTwo));
         }
     }
 
-    @Test
-    void toThrowExceptionWhenTheCarISAlreadyParked() throws Exception {
-        parkingLotTwo.park(carOne);
+    @Nested
+    class Unpark {
+        @Test
+        void toUnparkAParkedCar() throws Exception {
+            parkingLotOne.park(carOne);
+            parkingLotOne.unpark(carOne);
 
-        assertThrows(AlreadyParkedException.class, () ->
-                parkingLotTwo.park(carOne));
+            assertThrows(NotParkedException.class, () ->
+                    parkingLotOne.unpark(carOne));
+        }
     }
 
-    @Test
-    void toThrowExceptionWhenTheLotIsFull() throws Exception{
-        parkingLotOne.park(carOne);
+    @Nested
+    class Notify {
+        @Test
+        void toIntimateOwnerWhenTheParkingLotIsFull() throws Exception {
+            parkingLotOne.assignObserver(parkingLotOwner);
+            parkingLotOne.park(carOne);
 
-        assertThrows(ParkingLotFullException.class, () ->
-                parkingLotOne.park(carTwo));
-    }
+            verify(parkingLotOwner, times(1)).intimateParkingLotIsFull(parkingLotOne);
+        }
 
-    @Test
-    void toUnparkAParkedCar() throws Exception{
-        parkingLotOne.park(carOne);
-        parkingLotOne.unpark(carOne);
+        @Test
+        void notToIntimateOwnerWhenTheParkingLotIsNotFullAfterParking() throws Exception {
+            parkingLotTwo.assignObserver(parkingLotOwner);
+            parkingLotTwo.park(carOne);
 
-        assertThrows(NotParkedException.class, () ->
-                parkingLotOne.unpark(carOne));
-    }
+            verify(parkingLotOwner, never()).intimateParkingLotIsFull(parkingLotTwo);
+        }
 
-    @Test
-    void toIntimateOwnerWhenTheParkingLotIsFull() throws Exception
-    {
-        parkingLotOne.assignObserver(parkingLotOwner);
-        parkingLotOne.park(carOne);
+        @Test
+        void toIntimateTrafficCopWhenParkingLotIsFull() throws Exception {
+            parkingLotOne.assignObserver(trafficCop);
+            parkingLotOne.park(carOne);
 
-        verify(parkingLotOwner, times(1)).intimateParkingLotIsFull(parkingLot);
-    }
-
-    @Test
-    void notToIntimateOwnerWhenTheParkingLotIsNotFullAfterParking() throws Exception
-    {
-        parkingLotTwo.assignObserver(parkingLotOwner);
-        parkingLotTwo.park(carOne);
-
-        verify(parkingLotOwner, never()).intimateParkingLotIsFull(parkingLot);
-    }
-
-    @Test
-    void toIntimateTrafficCopWhenParkingLotIsFull() throws Exception
-    {
-        parkingLotOne.assignObserver(trafficCop);
-        parkingLotOne.park(carOne);
-
-        verify(trafficCop, times(1)).intimateParkingLotIsFull(parkingLot);
+            verify(trafficCop, times(1)).intimateParkingLotIsFull(parkingLotOne);
+        }
     }
 
 }

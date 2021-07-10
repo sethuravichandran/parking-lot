@@ -15,8 +15,8 @@ public class ParkingLot {
         this.size = size;
     }
 
-    public void park(Parkable parkable) throws AlreadyParkedException, ParkingLotFullException {
-        if (parkingLot.contains(parkable))
+    public void park(Parkable car) throws AlreadyParkedException, ParkingLotFullException {
+        if (parkingLot.contains(car))
         {
             throw new AlreadyParkedException();
         }
@@ -25,8 +25,7 @@ public class ParkingLot {
         {
             throw new ParkingLotFullException();
         }
-        parkingLot.add(parkable);
-
+        parkingLot.add(car);
         if (isFull()){
             observers.intimateParkingLotIsFull(this);
         }
@@ -34,12 +33,12 @@ public class ParkingLot {
 
 
 
-    public void unpark(Parkable parkable) throws NotParkedException{
-        if (!parkingLot.contains(parkable)){
+    public void unpark(Parkable car) throws NotParkedException{
+        if (!parkingLot.contains(car)){
             throw new NotParkedException();
         }
 
-        parkingLot.remove(parkable);
+        parkingLot.remove(car);
 
         if (isFullBeforeUnpark())
         {
