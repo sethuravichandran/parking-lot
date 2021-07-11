@@ -8,8 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Attendant implements ParkingLotObserver{
-    List<ParkingLot> availableParkingLots = new ArrayList<>();
-    HashMap<Parkable, ParkingLot> allocation = new HashMap<>();
+    private final ParkingLotSelector parkingLotSelector;
+    private final List<ParkingLot> availableParkingLots = new ArrayList<>();
+    private final HashMap<Parkable, ParkingLot> allocation = new HashMap<>();
+
+    public Attendant(ParkingLotSelector parkingLotSelector){
+        this.parkingLotSelector = parkingLotSelector;
+    }
 
     public void isResponsibleFor(ParkingLot parkingLot) {
         parkingLot.assignObserver(this);
@@ -27,7 +32,7 @@ public class Attendant implements ParkingLotObserver{
             throw new AllLotsAreFullException();
         }
 
-        ParkingLot lotToBeParked = availableParkingLots.get(0);
+        ParkingLot lotToBeParked = parkingLotSelector.selectLot(availableParkingLots);
         lotToBeParked.park(car);
         allocation.put(car, lotToBeParked);
     }

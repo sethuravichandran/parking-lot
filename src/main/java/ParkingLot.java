@@ -61,4 +61,8 @@ public class ParkingLot {
         return size == parkingLot.size();
     }
 
+    public int size(){
+        return size;
+    }
+
 }

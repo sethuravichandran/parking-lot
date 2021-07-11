@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.*;
@@ -104,4 +107,23 @@ public class ParkingLotTest {
         }
     }
 
+    @Test
+    void toTestALotWithTwoSpacesIsFullWhenTwoCarsAreParked() throws Exception {
+        parkingLotTwo.park(carOne);
+        parkingLotTwo.park(carTwo);
+
+        assertThat(parkingLotTwo.isFull(), is(true));
+    }
+
+    @Test
+    void toTestALotWithTwoSpacesIsNotFullWhenOneCarIsParked() throws Exception {
+        parkingLotTwo.park(carOne);
+
+        assertThat(parkingLotTwo.isFull(), is(false));
+    }
+
+    @Test
+    void toShowTheCorrectParkingLotSize() throws Exception{
+        assertThat(parkingLotTwo.size(), is(equalTo(2)));
+    }
 }
