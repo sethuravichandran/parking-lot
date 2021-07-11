@@ -62,7 +62,12 @@ public class ParkingLot {
     }
 
     public int size(){
+
         return size;
+    }
+
+    public int freeSpace(){
+        return size - parkingLot.size();
     }
 
 }

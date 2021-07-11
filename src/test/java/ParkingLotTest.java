@@ -126,4 +126,11 @@ public class ParkingLotTest {
     void toShowTheCorrectParkingLotSize() throws Exception{
         assertThat(parkingLotTwo.size(), is(equalTo(2)));
     }
+
+    @Test
+    void toShowTheCorrectCountOfTheFreeSpaces() throws Exception{
+        parkingLotTwo.park(carOne);
+
+        assertThat(parkingLotTwo.freeSpace(), is(equalTo(1)));
+    }
 }
